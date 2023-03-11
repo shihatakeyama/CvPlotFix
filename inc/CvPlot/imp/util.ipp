@@ -30,7 +30,7 @@ std::string toString(double value, int digits) {
 CVPLOT_DEFINE_FUN
 bool pixelText(const cv::Mat &data, int row, int col,
     int fontFace, double fontScale, int fontThickness, cv::Size maxSize, std::string &text, cv::Size &size) {
-    if (data.channels() > 1) {
+    if (data.channels() > 3) {
         return false; //TODO
     }
     auto checkText = [&](std::string candidate) {
@@ -63,11 +63,20 @@ bool pixelText(const cv::Mat &data, int row, int col,
         }
         return false;
     }
+
+    // ここから修正
+    case CV_8UC3:
+    {
+        int ch = data.channels();
+        const uint8_t* ps = data.ptr(row) + col * data.channels();
+        return checkText(std::to_string(ps[0]) + ',' + std::to_string(ps[1]) + ',' + std::to_string(ps[2]));
+    }
+    // ここまで修正
     default:
         return false;
     }
 }
-
+    
 }
 
 CVPLOT_DEFINE_FUN
