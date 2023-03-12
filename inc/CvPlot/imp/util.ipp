@@ -64,19 +64,19 @@ bool pixelText(const cv::Mat &data, int row, int col,
         return false;
     }
 
-    // ここから修正
+    // ここから
     case CV_8UC3:
     {
         int ch = data.channels();
         const uint8_t* ps = data.ptr(row) + col * data.channels();
-        return checkText(std::to_string(ps[0]) + ',' + std::to_string(ps[1]) + ',' + std::to_string(ps[2]));
+        return checkText(std::to_string(ps[2]) + ',' + std::to_string(ps[1]) + ',' + std::to_string(ps[0]));
     }
-    // ここまで修正
+    // ここまで
     default:
         return false;
     }
 }
-    
+
 }
 
 CVPLOT_DEFINE_FUN
